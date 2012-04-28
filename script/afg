@@ -1,0 +1,154 @@
+#!/usr/bin/perl
+
+# Driver for App::File::Grepper.
+
+# Author          : Johan Vromans
+# Created On      : Sat Apr 28 19:50:34 2012
+# Last Modified By: Johan Vromans
+# Last Modified On: Sat Apr 28 20:57:27 2012
+# Update Count    : 13
+# Status          : Unknown, Use with caution!
+
+################ Common stuff ################
+
+use strict;
+use warnings;
+
+################ Setup  ################
+
+# Process command line options, config files, and such.
+my $options = app_setup("afg", "0.01");
+
+################ Presets ################
+
+$options->{trace} = 1   if $options->{debug};
+$options->{verbose} = 1 if $options->{trace};
+
+################ Activate ################
+
+use App::File::Grepper;
+App::File::Grepper->main( $options, @ARGV );
+
+################ Options and Configuration ################
+
+use Getopt::Long 2.13;
+use File::Spec;
+use Carp;
+
+# Package name.
+my $my_package;
+# Program name and version.
+my ($my_name, $my_version);
+
+sub app_setup {
+    my ($appname, $appversion, %args) = @_;
+    my $help = 0;		# handled locally
+    my $ident = 0;		# handled locally
+
+    # Package name.
+    $my_package = $args{package};
+    # Program name and version.
+    if ( defined $appname ) {
+	($my_name, $my_version) = ($appname, $appversion);
+    }
+    else {
+	($my_name, $my_version) = qw( MyProg 0.01 );
+    }
+
+    my $options =
+      {
+       verbose		=> 0,		# verbose processing
+       ### ADD OPTIONS HERE ###
+
+       'ignorecase'	=> undef,
+       'filter'		=> undef,
+       'edit-with-emacs'=> 0,
+       'edit-with-vi'	=> 0,
+       'pattern'	=> undef,
+
+       # Development options (not shown with -help).
+       debug		=> 0,		# debugging
+       trace		=> 0,		# trace (show process)
+
+       # Service.
+       _package		=> $my_package,
+       _name		=> $my_name,
+       _version		=> $my_version,
+       _stdin		=> \*STDIN,
+       _stdout		=> \*STDOUT,
+       _stderr		=> \*STDERR,
+       _argv		=> [ @ARGV ],
+      };
+
+    # Colled command line options in a hash, for they will be needed
+    # later.
+    my $clo = {};
+
+    Getopt::Long::Configure('noignorecase');
+    # Sorry, layout is a bit ugly...
+    if ( !GetOptions
+	 ($clo,
+
+	  ### ADD OPTIONS HERE ###
+
+	 'ignorecase|i',
+	 'filter|G=s',
+	 'edit-with-emacs|e',
+	 'edit-with-vi|v',
+	 'pattern=s',
+
+	  # Standard options.
+	  'ident'		=> \$ident,
+	  'help|?'		=> \$help,
+	  'verbose',
+	  'trace',
+	  'debug',
+	 ) )
+    {
+	# GNU convention: message to STDERR upon failure.
+	app_usage(\*STDERR, 2);
+    }
+    # GNU convention: message to STDOUT upon request.
+    app_usage(\*STDOUT, 0) if $help;
+    app_ident(\*STDOUT) if $ident;
+
+    unless ( defined $clo->{pattern} ) {
+	$clo->{pattern} = shift( @ARGV );
+    }
+    app_usage(\*STDERR, 1) unless @ARGV;
+
+    # Plug in command-line options.
+    @{$options}{keys %$clo} = values %$clo;
+
+    $options;
+}
+
+sub app_ident {
+    my ($fh) = @_;
+    print {$fh} ("This is ",
+		 $my_package
+		 ? "$my_package [$my_name $my_version]"
+		 : "$my_name version $my_version",
+		 "\n");
+}
+
+sub app_usage {
+    my ($fh, $exit) = @_;
+    app_ident($fh);
+    print ${fh} <<EndOfUsage;
+Usage: $0 [options] pattern directories...
+
+Application options:
+    --ignorecase  -i	ignore case while matching
+    --filter=PAT  -G	fileter filenames according to PAT
+    --edit-with-emacs  -e   pass each file that matches to emacs
+    --edit-with-vi  -v	pass each file that matches to vi
+    --pattern=PAT	explicitly specify the pattern
+
+Miscellaneous options:
+    --help		this message
+    --ident		show identification
+    --verbose		verbose information
+EndOfUsage
+    exit $exit if defined $exit;
+}
