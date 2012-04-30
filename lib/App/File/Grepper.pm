@@ -1,3 +1,5 @@
+#! perl
+
 package App::File::Grepper;
 
 use warnings;
@@ -7,13 +9,9 @@ use strict;
 
 App::File::Grepper - Greps files for pattern
 
-=head1 VERSION
-
-Version 0.01
-
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 =head1 SYNOPSIS
 
@@ -22,6 +20,12 @@ files for a pattern.
 
     use App::File::Grepper;
     App::File::Grepper->main( $options, @dirs );
+
+=HEAD1 RATIONALE
+
+There are many tools that can do this, e.g. C<ack>. However none of
+these can call an editor when a file matches the search argument and
+that is something B<I> often need.
 
 =head1 OPTIONS
 
@@ -54,11 +58,19 @@ Pass each file where the pattern is found to the vi editor.
 A perl pattern to select which files must be processed. Note that this
 pattern is applied to the basename of each file, not the full path.
 
+=item exclude
+
+A perl pattern to select which files must be rejected. Note that this
+pattern is applied to the basename of each file, not the full path.
+Also, this pattern is applied before the filter pattern.
+
+Version control directories C<RCS>, C<CVS>, C<.svn>, C<.git> and
+C<.hg> are always excluded.
+
 =back
 
 =cut
 
-use File::Spec;
 use File::Find;
 use Term::ANSIColor;
 
@@ -97,16 +109,31 @@ sub main {
 	$filter = $opts->{filter};
 	$filter = qr/$filter/;
     }
+    my $exclude;
+    if ( defined $opts->{exclude} ) {
+	$exclude = $opts->{exclude};
+	$exclude = qr/$exclude/;
+    }
 
     my $grepper = sub {
 
-	return unless -f _;
+	# Prune VC dirs. Always.
+	if ( -d $_ && $_ =~ /^(RCS|CVS|\.svn|\.git|\.hg)$/ ) {
+	    $File::Find::prune = 1;
+	    return;
+	}
+
+	# Files only.
+	return unless -f $_;
+
+	# Handle include/exclude filters.
+	return if $exclude && ( $_ =~ $exclude );
 	return if $filter && ( $_ !~ $filter );
 
 	my $file = $_;
 
 	# Okay, we've got one.
-	open( my $fh, '<', $_ )
+	open( my $fh, '<', $file )
 	  or warn("$File::Find::name: $!\n"), return;
 
 	unless ( -T $fh ) {

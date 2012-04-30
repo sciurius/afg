@@ -5,8 +5,8 @@
 # Author          : Johan Vromans
 # Created On      : Sat Apr 28 19:50:34 2012
 # Last Modified By: Johan Vromans
-# Last Modified On: Sat Apr 28 20:57:27 2012
-# Update Count    : 13
+# Last Modified On: Mon Apr 30 15:17:13 2012
+# Update Count    : 17
 # Status          : Unknown, Use with caution!
 
 ################ Common stuff ################
@@ -32,8 +32,6 @@ App::File::Grepper->main( $options, @ARGV );
 ################ Options and Configuration ################
 
 use Getopt::Long 2.13;
-use File::Spec;
-use Carp;
 
 # Package name.
 my $my_package;
@@ -62,6 +60,7 @@ sub app_setup {
 
        'ignorecase'	=> undef,
        'filter'		=> undef,
+       'exclude'	=> undef,
        'edit-with-emacs'=> 0,
        'edit-with-vi'	=> 0,
        'pattern'	=> undef,
@@ -120,6 +119,11 @@ sub app_setup {
     # Plug in command-line options.
     @{$options}{keys %$clo} = values %$clo;
 
+    if ( $options->{debug} ) {
+	use Data::Dumper;
+	warn Dumper $options;
+    }
+
     $options;
 }
 
@@ -140,7 +144,8 @@ Usage: $0 [options] pattern directories...
 
 Application options:
     --ignorecase  -i	ignore case while matching
-    --filter=PAT  -G	fileter filenames according to PAT
+    --filter=PAT  -G	filter filenames according to PAT
+    --exclude=PAT -E	reject filenames according to PAT
     --edit-with-emacs  -e   pass each file that matches to emacs
     --edit-with-vi  -v	pass each file that matches to vi
     --pattern=PAT	explicitly specify the pattern
