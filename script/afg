@@ -5,19 +5,20 @@
 # Author          : Johan Vromans
 # Created On      : Sat Apr 28 19:50:34 2012
 # Last Modified By: Johan Vromans
-# Last Modified On: Mon Apr 30 15:17:13 2012
-# Update Count    : 17
+# Last Modified On: Mon Apr 30 21:29:25 2012
+# Update Count    : 22
 # Status          : Unknown, Use with caution!
 
 ################ Common stuff ################
 
 use strict;
 use warnings;
+use App::File::Grepper;
 
 ################ Setup  ################
 
 # Process command line options, config files, and such.
-my $options = app_setup("afg", "0.01");
+my $options = app_setup( "afg", $App::File::Grepper::VERSION );
 
 ################ Presets ################
 
@@ -26,7 +27,6 @@ $options->{verbose} = 1 if $options->{trace};
 
 ################ Activate ################
 
-use App::File::Grepper;
 App::File::Grepper->main( $options, @ARGV );
 
 ################ Options and Configuration ################
@@ -92,6 +92,7 @@ sub app_setup {
 
 	 'ignorecase|i',
 	 'filter|G=s',
+	 'exclude|E=s',
 	 'edit-with-emacs|e',
 	 'edit-with-vi|v',
 	 'pattern=s',
@@ -157,3 +158,63 @@ Miscellaneous options:
 EndOfUsage
     exit $exit if defined $exit;
 }
+
+=head1 NAME
+
+afg - Greps files for pattern
+
+=head1 SYNOPSIS
+
+Runs a File::Find on the specified directories, and greps all text
+files for a pattern.
+
+This script is a driver for L<App::File::Grepper>, which see.
+
+=head1 COMMAND LINE OPTIONS
+
+=over 4
+
+=item B<--pattern=>I<pattern>
+
+App::File::Grepper option: B<pattern>.
+
+If no B<--pattern> option is supplied, it is taken from the command line.
+
+=item B<--ignorecase> or B<-i>
+
+App::File::Grepper option: B<ignorecase>.
+
+=item B<--edit-with-emacs> or B<-e>
+
+App::File::Grepper option: B<edit-with-emacs>.
+
+=item B<--edit-with-vi> or B<-v>.
+
+App::File::Grepper option: B<edit-with-vi>.
+
+=item B<--filter=>I<pattern> or B<-G> I<pattern>
+
+App::File::Grepper option: B<filter>.
+
+=item B<--exclude=>I<pattern> or B<-E> I<pattern>
+
+App::File::Grepper option: B<exclude>.
+
+=back
+
+=head1 AUTHOR
+
+Johan Vromans, C<< <jv at cpan.org> >>
+
+=head1 SEE ALSO
+
+L<App::File::Grepper>.
+
+=head1 COPYRIGHT & LICENSE
+
+Copyright 2012 Johan Vromans, all rights reserved.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+=cut

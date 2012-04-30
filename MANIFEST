@@ -4,3 +4,4 @@ Makefile.PL
 README
 lib/App/File/Grepper.pm
 t/00-load.t
+script/afg
