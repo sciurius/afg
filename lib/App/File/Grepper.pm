@@ -11,7 +11,7 @@ App::File::Grepper - Greps files for pattern
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 =head1 SYNOPSIS
 
@@ -21,13 +21,16 @@ files for a pattern.
     use App::File::Grepper;
     App::File::Grepper->main( $options, @dirs );
 
-=HEAD1 RATIONALE
+=head1 RATIONALE
 
 There are many tools that can do this, e.g. C<ack>. However none of
 these can call an editor when a file matches the search argument and
 that is something B<I> often need.
 
 =head1 OPTIONS
+
+The first argument to the main() method is a reference to a hash with
+options.
 
 =over 4
 
@@ -212,8 +215,7 @@ L<http://search.cpan.org/dist/App-File-Grepper>
 
 =head1 ACKNOWLEDGEMENTS
 
-This program was inspired by the stubborness of the author of C<ack>
-to implement a B<-e> option.
+This program was inspired by C<ack> not having a B<-e> option.
 
 =head1 COPYRIGHT & LICENSE
 
