@@ -5,8 +5,8 @@
 # Author          : Johan Vromans
 # Created On      : Sat Apr 28 19:50:34 2012
 # Last Modified By: Johan Vromans
-# Last Modified On: Mon Apr 30 21:29:25 2012
-# Update Count    : 22
+# Last Modified On: Tue Oct  2 19:57:54 2012
+# Update Count    : 24
 # Status          : Unknown, Use with caution!
 
 ################ Common stuff ################
@@ -63,6 +63,7 @@ sub app_setup {
        'exclude'	=> undef,
        'edit-with-emacs'=> 0,
        'edit-with-vi'	=> 0,
+       'view'		=> 0,
        'pattern'	=> undef,
 
        # Development options (not shown with -help).
@@ -96,6 +97,7 @@ sub app_setup {
 	 'edit-with-emacs|e',
 	 'edit-with-vi|v',
 	 'pattern=s',
+	 'view',
 
 	  # Standard options.
 	  'ident'		=> \$ident,
@@ -150,6 +152,7 @@ Application options:
     --edit-with-emacs  -e   pass each file that matches to emacs
     --edit-with-vi  -v	pass each file that matches to vi
     --pattern=PAT	explicitly specify the pattern
+    --view		view each file that matches
 
 Miscellaneous options:
     --help		this message
@@ -191,6 +194,10 @@ App::File::Grepper option: B<edit-with-emacs>.
 =item B<--edit-with-vi> or B<-v>.
 
 App::File::Grepper option: B<edit-with-vi>.
+
+=item B<--view>.
+
+App::File::Grepper option: B<view>.
 
 =item B<--filter=>I<pattern> or B<-G> I<pattern>
 

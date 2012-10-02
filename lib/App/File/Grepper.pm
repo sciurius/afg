@@ -11,7 +11,7 @@ App::File::Grepper - Greps files for pattern
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 =head1 SYNOPSIS
 
@@ -56,6 +56,10 @@ Pass each file where the pattern is found to the emacs editor client.
 
 Pass each file where the pattern is found to the vi editor.
 
+=item view
+
+Pass each file where the pattern is found to the less viewer.
+
 =item filter
 
 A perl pattern to select which files must be processed. Note that this
@@ -91,6 +95,9 @@ sub main {
     }
     elsif ( $opts->{'edit-with-vi'} ) {
 	$edit = 'vi';
+    }
+    elsif ( $opts->{'view'} ) {
+	$edit = 'less';
     }
 
     my $ignorecase =
@@ -144,9 +151,16 @@ sub main {
 	    return;
 	}
 
-	binmode( $fh, 'encoding(utf-8)' );
+	binmode( $fh, 'raw' );
+
+	use Encode qw(decode);
 
 	while ( <$fh> ) {
+
+	    eval {
+		$_ = decode( 'UTF-8', $_, 1 );
+	    }
+	    or $_ = decode( 'iso-8859-1', $_ );
 
 	    next unless s/^(.*?)($pat)/"$1".hilite($2)/ge;
 
@@ -159,6 +173,12 @@ sub main {
 	    elsif ( $edit eq 'emacs') {
 		system( "emacsclient",
 			"+$.:" . (1+length($1)),
+			$file );
+	    }
+	    elsif ( $edit eq 'view') {
+		system( "less",
+			$ignorecase ? ( "-i" ) : (),
+			"+/$opat",
 			$file );
 	    }
 	    last if $edit;
