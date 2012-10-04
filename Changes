@@ -1,5 +1,11 @@
 Revision history for App-File-Grepper
 
+0.06	2012-10-04
+	Require Encode (for older perls).
+
+0.05	2012-10-02
+	Add --view option.
+
 0.04    2012-04-30
         Document afg utility.
 

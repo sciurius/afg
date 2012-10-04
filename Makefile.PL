@@ -30,6 +30,7 @@ WriteMakefile(
 		  'File::Find'	     => 0,
 		  'Term::ANSIColor'  => 0,
 		  'Test::More'	     => 0,
+		  'Encode'	     => 0,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'App-File-Grepper-*' },
