@@ -11,7 +11,7 @@ App::File::Grepper - Greps files for pattern
 
 =cut
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 =head1 SYNOPSIS
 
@@ -124,6 +124,8 @@ sub main {
 	$exclude = $opts->{exclude};
 	$exclude = qr/$exclude/;
     }
+
+    binmode( STDOUT, ":utf8" );
 
     my $grepper = sub {
 

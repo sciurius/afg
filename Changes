@@ -1,5 +1,8 @@
 Revision history for App-File-Grepper
 
+0.07	2013-05-14
+	(script) UTF-8 decode pattern.
+
 0.06	2012-10-04
 	Require Encode (for older perls).
 
