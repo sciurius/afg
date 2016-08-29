@@ -11,7 +11,7 @@ App::File::Grepper - Greps files for pattern
 
 =cut
 
-our $VERSION = '0.07';
+our $VERSION = '1.00';
 
 =head1 SYNOPSIS
 
@@ -196,8 +196,8 @@ sub main {
     };
 
     find( { wanted => $grepper,
-	    chdir => 0 },
-	  @dirs );
+	    no_chdir => 1,
+	  }, @dirs );
 }
 
 =head1 AUTHOR
@@ -241,7 +241,7 @@ This program was inspired by C<ack> not having a B<-e> option.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2012 Johan Vromans, all rights reserved.
+Copyright 2012,2016 Johan Vromans, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
