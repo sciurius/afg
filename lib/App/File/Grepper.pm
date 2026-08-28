@@ -11,7 +11,7 @@ App::File::Grepper - Greps files for pattern
 
 =cut
 
-our $VERSION = '1.03';
+our $VERSION = '1.04';
 
 =head1 SYNOPSIS
 
@@ -220,7 +220,7 @@ Johan Vromans, C<< <JV at cpan.org> >>
 =head1 SUPPORT AND DOCUMENTATION
 
 Development of this module takes place on GitHub:
-https://github.com/sciurius/perl-App-File-Grepper.
+https://github.com/sciurius/afg.
 
 You can find documentation for this module with the perldoc command.
 

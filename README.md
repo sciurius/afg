@@ -1,8 +1,8 @@
 # App::File::Grepper
 
-![Version](https://img.shields.io/github/v/release/sciurius//perl-App-File-Grepper)
-![GitHub issues](https://img.shields.io/github/issues/sciurius//perl-App-File-Grepper)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
+![Version](https://img.shields.io/github/v/release/sciurius/afg)
+![GitHub issues](https://img.shields.io/github/issues/sciurius/afg)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
 ![Language Perl](https://img.shields.io/badge/Language-Perl-blue)
 
 A simple but powerful tool to examine hierarchies of text files for
@@ -26,7 +26,7 @@ To install this module, run the following commands:
 # SUPPORT AND DOCUMENTATION
 
 Development of this module takes place on GitHub:
-https://github.com/sciurius/perl-App-File-Grepper.
+https://github.com/sciurius/afg
 
 You can find documentation for this module with the perldoc command.
 
