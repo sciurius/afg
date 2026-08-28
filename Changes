@@ -1,6 +1,6 @@
 Revision history for App-File-Grepper
 
-1.03	
+1.03	2026-08-28
 
 	Fix problem with unintended exclude of "./foo" and "../foo".
 
